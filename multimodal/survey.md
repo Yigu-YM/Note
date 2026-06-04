@@ -27,11 +27,11 @@ mindmap
             video
             audio
             text
-            other(* post)
+            other(* pose)
         Output
             text
             video
-            * post
+            * pose
             * intention
         Call expert model
             YOLO
@@ -159,7 +159,7 @@ Motion 方向可以分为两类路线：
 2. Human Foundation Model / 大一统具身模型  
    用统一模型处理多模态输入输出，目标更接近机器人领域的 foundation model。该路线潜力更大，但落地成本和不确定性更高。
 
-代表性工作：
+代表性：
 
 - GitHub: [MDM](https://github.com/guytevet/motion-diffusion-model)
 - Paper: [Human Motion Diffusion Model](https://arxiv.org/abs/2209.14916)
@@ -189,10 +189,10 @@ MDM 是 Motion 研究中的重要分界点，底层技术开始明显转向 Diff
 
 ### 7.1 基座模型评测
 
-- 多模态理解：能否同时理解视频、音频、文本、post、EMG 等输入；
-- 规划能力：能否把复杂任务拆成正确步骤；
+- 多模态理解：能否同时理解视频、音频、文本、等输入（特别是小模型输出的动作规划及场景融合能力）；
+- 规划能力：能否把复杂任务拆成正确步骤（比如获得一个task拿一杯水，是否能拆解为具体实现步骤）；
 - 工具调用：能否判断何时调用专家模型；
-- 结构化输出：能否稳定输出意图、动作计划、置信度等结构化结果；
+- 结构化输出：能否稳定输出意图、动作计划等结构化结果；
 - 错误恢复：专家模型结果冲突或缺失时，能否给出合理降级判断。
 
 ### 7.2 Motion 评测
