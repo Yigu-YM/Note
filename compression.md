@@ -39,6 +39,9 @@ tags: [model-compression, quantization, pruning, distillation]
 
 [Capacity Gap（容量间隙）](https://aclanthology.org/2025.acl-long.1097.pdf)：容量间隙的本质，是小模型受到参数规模、层数和宽度等物理容量限制，因此在部分任务上存在能力上限。教师模型和学生模型差距越大，学生模型越容易出现“学不会”或只能学习表层行为的情况。
 
+
+蒸馏容易保留的是结果，难保留的是产生结果的内部机制。
+
 ## 1. 能力分类
 
 可以先将压缩后的能力变化分成两类：
@@ -120,3 +123,28 @@ In-context Learning 能力
 ## 6. 总结
 
 模型压缩必然带来能力损失，尤其是泛化、长链推理和复杂规划能力。知识蒸馏更适合用来保留语言表达、指令跟随和固定任务能力；对于领域知识和实时信息，应结合高质量数据、RAG 和工具调用进行补偿。
+
+# 学术界具体实验研究
+
+ [《What Do Compressed Deep Neural Networks Forget?》](https://arxiv.org/pdf/1911.05248)
+
+ 这个论文实验设置
+ |数据集|模型|
+ |-----|----|
+ |ImageNet| ResNet50|
+ |CelebA  | CNN分类器|
+
+ 压缩方法
+
+量化和稀疏化
+
+
+
+[《Quantization Hurts Reasoning? An Empirical Study on Quantized Reasoning Models》](https://arxiv.org/abs/2504.04823v1)
+
+
+
+
+# 对实际项目影响
+
+对于 Qwen3-o 实际的进行剪枝
