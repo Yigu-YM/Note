@@ -124,27 +124,117 @@ In-context Learning 能力
 
 模型压缩必然带来能力损失，尤其是泛化、长链推理和复杂规划能力。知识蒸馏更适合用来保留语言表达、指令跟随和固定任务能力；对于领域知识和实时信息，应结合高质量数据、RAG 和工具调用进行补偿。
 
-# 学术界具体实验研究
+# 学术界具体实验研究简述
 
- [《What Do Compressed Deep Neural Networks Forget?》](https://arxiv.org/pdf/1911.05248)
+## 1.
 
- 这个论文实验设置
- |数据集|模型|
- |-----|----|
- |ImageNet| ResNet50|
- |CelebA  | CNN分类器|
+[《What Do Compressed Deep Neural Networks Forget?》](https://arxiv.org/pdf/1911.05248)
 
- 压缩方法
+### 实验设置
+
+|数据集|模型|
+|-----|----|
+|ImageNet (1000类)| ResNet50|
+|CelebA (40个标签) | CNN分类器|
+
+### 压缩方法
 
 量化和稀疏化
 
+### 结论
 
+模型压缩（剪枝）后，对于整体准确率计划不变，但实际会损失部分能力。
+
+类比LLM得出：损失稀有知识的记忆（长尾知识）。但基础的分类或短问答，变化不大。
+
+## 2. 
 
 [《Quantization Hurts Reasoning? An Empirical Study on Quantized Reasoning Models》](https://arxiv.org/abs/2504.04823v1)
 
 
+### 模型
 
+- DS-R1-Distill-Qwen-1.5B 
+- DS-R1-Distill-Qwen-7B 
+- DS-R1-Distill-Qwen-14B 
+- DS-R1-Distill-Qwen-32B
+
+
+### Benchmark  
+
+数学：AIME24、MATH500
+
+科学推理：GPQA
+
+代码推理：LiveCodeBench
+
+### 实验维度
+
+```
+├── Weight-only Quantization
+│      ├── AWQ-W4G128
+│      └── AWQ-W3G128
+│
+├── KV Cache Quantization
+│      ├── KVQuant-KV4
+│      └── KVQuant-KV3
+│
+├── Weight-Activation Quantization
+│      ├── FlatQuant-W8A8KV8
+│      └── FlatQuant-W4A4KV4
+│
+└── BF16
+       └── Baseline
+```
+
+### 结论
+
+根据实验得出小参数模型对于长链推理能力呈现越小下降趋势越大。
+
+## 3. 
+
+[Phase transitions in large language model compression](https://www.nature.com/articles/s44387-026-00072-8)
+
+
+### 实验配置
+
+LLaMA-7B 为主要实验模型
+
+Qwen2.5/7B/14B/72B/Gemma/LLaMA3.1-8B 补充验证
+
+数据集：WikiText-2
+
+### 压缩方法
+
+- Structured Pruning实验
+    - Layer Pruning
+    - Attention Head Pruning
+    - Block Pruning
+- Unstructured Pruning实验
+    - SparseGPT
+    - Wanda
+- Quantization实验
+- Qwen（大模型是否更耐压缩）
+    - 7B
+    - 14B
+    - 72B
+- Low Rank实验
+- 联合压缩实验
+
+### 指标
+
+PPL(perplexity) 
+
+### 结论
+
+> meaning the model can be compressed to ~10% of its original size without significant performance degradation.
+
+论文原文指出，在各种方式的组合下，理论估计能达到10%压缩率
+
+模型压缩有一个临界值，超过这个骤变值后对模型进行比较变得没有意义。
 
 # 对实际项目影响
 
-对于 Qwen3-o 实际的进行剪枝
+对于 Qwen3-o 实际的进行压缩
+
+实际场景并不需要长链推理以及长尾知识的能力，因此理想情况下在控制好合理的压缩范围下，是能够达到需求的。但对于上下文理解能力，即知识记忆能力下降可以通过外置知识来实现。对于世界模型能力（即对世界的认知能力）在实际需求中并不太需要该能力。
